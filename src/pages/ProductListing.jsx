@@ -1,9 +1,12 @@
 import React from 'react';
-import { getCategories } from '../services/api';
+import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
+import ItensResumidos from '../components/ItensResumidos';
 
 class ProductListing extends React.Component {
   state = {
     search: '',
+    itemPesquisado: [],
+    pesquisou: false,
     dataCategories: [],
   };
 
@@ -16,14 +19,32 @@ class ProductListing extends React.Component {
     this.setState({ search: value });
   };
 
+  buscarProdutos = async () => {
+    const { search } = this.state;
+    const listaDeProdutos = await getProductsFromCategoryAndQuery(search);
+    const itensEscolhidos = listaDeProdutos.results;
+    this.setState({ itemPesquisado: itensEscolhidos });
+    this.setState({ pesquisou: true });
+  };
+
   getCategoriesAPI = async () => {
     const dataCategories = await getCategories();
     this.setState({ dataCategories });
   };
 
   render() {
-    const { search, dataCategories } = this.state;
+    const { search, itemPesquisado, pesquisou, dataCategories } = this.state;
     console.log(dataCategories);
+    const pesquisa = itemPesquisado.length > 0
+      ? itemPesquisado.map((cadaProduto) => (
+        <ItensResumidos
+          key={ cadaProduto.title }
+          nome={ cadaProduto.title }
+          imagem={ cadaProduto.thumbnail }
+          alt={ cadaProduto.title }
+          preco={ cadaProduto.price }
+        />))
+      : <p>Nenhum produto foi encontrado</p>;
     return (
       <div>
         <form>
@@ -32,32 +53,44 @@ class ProductListing extends React.Component {
             <input
               type="text"
               id="productListing"
+              data-testid="query-input"
               onChange={ this.handleChange }
               value={ search }
             />
           </label>
+          <button
+            type="button"
+            data-testid="query-button"
+            onClick={ this.buscarProdutos }
+          >
+            Buscar
+          </button>
           <p
             data-testid="home-initial-message"
           >
             Digite algum termo de pesquisa ou escolha uma categoria.
           </p>
+          {
+            dataCategories.map(({ name, id }) => (
+              <label
+                key={ id }
+                htmlFor="category"
+              >
+                { name }
+                <input
+                  type="radio"
+                  data-testid="category"
+                  id="category"
+                />
+              </label>
+            ))
+          }
+          <div>
+            {
+              pesquisou ? pesquisa : null
+            }
+          </div>
         </form>
-
-        {
-          dataCategories.map(({ name, id }) => (
-            <label
-              key={ id }
-              htmlFor="category"
-            >
-              { name }
-              <input
-                type="radio"
-                data-testid="category"
-                id="category"
-              />
-            </label>
-          ))
-        }
       </div>
     );
   }
