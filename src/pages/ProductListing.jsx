@@ -26,6 +26,7 @@ class ProductListing extends React.Component {
     console.log(dataCategories);
     return (
       <div>
+        <h1>ML</h1>
         <form>
           <label htmlFor="productListing">
             Busca:
