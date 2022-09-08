@@ -5,7 +5,7 @@ class ItensResumidos extends Component {
   render() {
     const { nome, imagem, preco } = this.props;
     return (
-      <div data-testid="product">
+      <div data-testid="product" className="cardProduct">
         <p>{ nome }</p>
         <img src={ imagem } alt={ nome } />
         <p>

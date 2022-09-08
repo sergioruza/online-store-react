@@ -59,9 +59,11 @@ class ProductListing extends React.Component {
           >
             Digite algum termo de pesquisa ou escolha uma categoria.
           </p>
-          {
-            pesquisou ? pesquisa : null
-          }
+          <div>
+            {
+              pesquisou ? pesquisa : null
+            }
+          </div>
         </form>
       </div>
     );
