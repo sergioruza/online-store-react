@@ -1,5 +1,5 @@
 import React from 'react';
-import { getProductsFromCategoryAndQuery } from '../services/api';
+import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
 import ItensResumidos from '../components/ItensResumidos';
 
 class ProductListing extends React.Component {
@@ -7,7 +7,12 @@ class ProductListing extends React.Component {
     search: '',
     itemPesquisado: [],
     pesquisou: false,
+    dataCategories: [],
   };
+
+  componentDidMount() {
+    this.getCategoriesAPI();
+  }
 
   handleChange = ({ target }) => {
     const { value } = target;
@@ -22,8 +27,14 @@ class ProductListing extends React.Component {
     this.setState({ pesquisou: true });
   };
 
+  getCategoriesAPI = async () => {
+    const dataCategories = await getCategories();
+    this.setState({ dataCategories });
+  };
+
   render() {
-    const { search, itemPesquisado, pesquisou } = this.state;
+    const { search, itemPesquisado, pesquisou, dataCategories } = this.state;
+    console.log(dataCategories);
     const pesquisa = itemPesquisado.length > 0
       ? itemPesquisado.map((cadaProduto) => (
         <ItensResumidos
