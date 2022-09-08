@@ -70,6 +70,21 @@ class ProductListing extends React.Component {
           >
             Digite algum termo de pesquisa ou escolha uma categoria.
           </p>
+          {
+            dataCategories.map(({ name, id }) => (
+              <label
+                key={ id }
+                htmlFor="category"
+              >
+                { name }
+                <input
+                  type="radio"
+                  data-testid="category"
+                  id="category"
+                />
+              </label>
+            ))
+          }
           <div>
             {
               pesquisou ? pesquisa : null
