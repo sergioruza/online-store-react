@@ -19,6 +19,7 @@ class ProductListing extends React.Component {
     this.setState({ search: value });
   };
 
+
   buscarProdutos = async () => {
     const { search } = this.state;
     const listaDeProdutos = await getProductsFromCategoryAndQuery(search);
@@ -91,6 +92,22 @@ class ProductListing extends React.Component {
             }
           </div>
         </form>
+
+        {
+          dataCategories.map(({ name, id }) => (
+            <label
+              key={ id }
+              htmlFor="category"
+            >
+              { name }
+              <input
+                type="radio"
+                data-testid="category"
+                id="category"
+              />
+            </label>
+          ))
+        }
       </div>
     );
   }
