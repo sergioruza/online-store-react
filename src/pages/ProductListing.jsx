@@ -41,13 +41,18 @@ class ProductListing extends React.Component {
     const { search, itemPesquisado, dataCategories } = this.state;
     const pesquisa = itemPesquisado.length > 0
       ? itemPesquisado.map((cadaProduto) => (
-        <ItensResumidos
+        <Link
+          to={ `/product/${cadaProduto.id}` }
           key={ cadaProduto.id }
-          nome={ cadaProduto.title }
-          imagem={ cadaProduto.thumbnail }
-          alt={ cadaProduto.title }
-          preco={ cadaProduto.price }
-        />))
+        >
+          <ItensResumidos
+            key={ cadaProduto.id }
+            nome={ cadaProduto.title }
+            imagem={ cadaProduto.thumbnail }
+            alt={ cadaProduto.title }
+            preco={ cadaProduto.price }
+          />
+        </Link>))
       : <p>Nenhum produto foi encontrado</p>;
     return (
       <div>
