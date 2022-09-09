@@ -7,7 +7,6 @@ class ProductListing extends React.Component {
   state = {
     search: '',
     itemPesquisado: [],
-    pesquisou: false,
     dataCategories: [],
   };
 
@@ -20,12 +19,12 @@ class ProductListing extends React.Component {
     this.setState({ search: value });
   };
 
-  buscarProdutos = async () => {
-    const { search } = this.state;
-    const listaDeProdutos = await getProductsFromCategoryAndQuery(search);
+  buscarProdutos = async (category) => {
+    // const { search } = this.state;
+    this.setState({ itemPesquisado: [] });
+    const listaDeProdutos = await getProductsFromCategoryAndQuery(category);
     const itensEscolhidos = listaDeProdutos.results;
     this.setState({ itemPesquisado: itensEscolhidos });
-    this.setState({ pesquisou: true });
   };
 
   getCategoriesAPI = async () => {
@@ -33,13 +32,17 @@ class ProductListing extends React.Component {
     this.setState({ dataCategories });
   };
 
+  onChangeRadio = ({ target }) => {
+    const { value } = target;
+    this.buscarProdutos(value);
+  };
+
   render() {
-    const { search, itemPesquisado, pesquisou, dataCategories } = this.state;
-    console.log(dataCategories);
+    const { search, itemPesquisado, dataCategories } = this.state;
     const pesquisa = itemPesquisado.length > 0
       ? itemPesquisado.map((cadaProduto) => (
         <ItensResumidos
-          key={ cadaProduto.title }
+          key={ cadaProduto.id }
           nome={ cadaProduto.title }
           imagem={ cadaProduto.thumbnail }
           alt={ cadaProduto.title }
@@ -65,7 +68,7 @@ class ProductListing extends React.Component {
           <button
             type="button"
             data-testid="query-button"
-            onClick={ this.buscarProdutos }
+            onClick={ () => this.buscarProdutos(search) }
           >
             Buscar
           </button>
@@ -80,18 +83,21 @@ class ProductListing extends React.Component {
                 key={ id }
                 htmlFor="category"
               >
-                { name }
                 <input
+                  onChange={ this.onChangeRadio }
+                  value={ name }
+                  name="categories"
                   type="radio"
                   data-testid="category"
                   id="category"
                 />
+                { name }
               </label>
             ))
           }
           <div>
             {
-              pesquisou ? pesquisa : null
+              pesquisa
             }
           </div>
         </form>
