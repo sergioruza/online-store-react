@@ -1,29 +1,53 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { getProductById } from '../services/api';
 
 class ProdutoDetalhado extends React.Component {
   state = {
-    // idDoProduto: '',
+    detalhesDoProduto: {},
+    atributos: {},
   };
 
-  // componentDidMount() {
-  //   this.pegarId();
-  // }
+  componentDidMount() {
+    this.pegarDetalhesDoProduto();
+  }
 
-  pegarId = () => {
-    // const { match: { params: { id } } } = this.props;
-    // console.log(id);
+  pegarDetalhesDoProduto = async () => {
+    const { match: { params: { id } } } = this.props;
+    const data = await getProductById(id);
+    this.setState({ detalhesDoProduto: data, atributos: data.attributes });
   };
 
   render() {
-    // const { value } = this.props;
-    // // : { params: { id } }
-    // console.log(value);
+    const { detalhesDoProduto, atributos } = this.state;
     return (
       <div>
-        <button type="button" onClick={ this.pegarId }>Pegar</button>
+        <h3 data-testid="product-detail-name">{detalhesDoProduto.title}</h3>
+        <img
+          src={ detalhesDoProduto.thumbnail }
+          alt={ detalhesDoProduto.title }
+          data-testid="product-detail-image"
+        />
+        <p data-testid="product-detail-price">{detalhesDoProduto.price}</p>
+        <ol>
+          Detalhes do Produto:
+          {
+            atributos.length > 0
+              ? atributos
+                .map(({ name }) => <li key={ name }>{name}</li>) : null
+          }
+        </ol>
+        <Link to="/Cart">
+          <button type="button" data-testid="shopping-cart-button">Carrinho</button>
+        </Link>
       </div>
     );
   }
 }
+
+ProdutoDetalhado.propTypes = {
+  match: PropTypes.func.isRequired,
+};
 
 export default ProdutoDetalhado;

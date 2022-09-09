@@ -44,6 +44,7 @@ class ProductListing extends React.Component {
         <Link
           to={ `/product/${cadaProduto.id}` }
           key={ cadaProduto.id }
+          data-testid="product-detail-link"
         >
           <ItensResumidos
             key={ cadaProduto.id }
