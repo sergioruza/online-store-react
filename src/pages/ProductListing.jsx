@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
 import ItensResumidos from '../components/ItensResumidos';
 
@@ -47,6 +48,9 @@ class ProductListing extends React.Component {
       : <p>Nenhum produto foi encontrado</p>;
     return (
       <div>
+        <Link to="/Cart" data-testid="shopping-cart-button">
+          <button type="button">Carrinho</button>
+        </Link>
         <form>
           <label htmlFor="productListing">
             Busca:
