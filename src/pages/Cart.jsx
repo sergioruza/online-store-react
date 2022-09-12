@@ -6,21 +6,27 @@ class Cart extends React.Component {
   };
 
   componentDidMount() {
-    const data = JSON.parse(localStorage.getItem('produtos'));
-    this.setState({ data });
+    this.getStorage();
   }
+
+  getStorage = () => {
+    const data = JSON.parse(localStorage.getItem('produtos'));
+    console.log('oi', data);
+    if (data) this.setState({ data });
+  };
 
   render() {
     const { data } = this.state;
     return (
       <div>
         {
-          data.length > 0 ? data.map(({ id, price, thumbnail, title }) => (
+          data ? data.map(({ id, price, thumbnail, title }) => (
             <div key={ id }>
+              {console.log(title)}
               <img src={ thumbnail } alt={ title } />
               {/* <p><span data-testid="shopping-cart-product-name">{ title }</span>, <span data-testid="shopping-cart-product-quantity"> {available_quantity} </span><></></p> */}
               <p data-testid="shopping-cart-product-name">{ title }</p>
-              <p data-testid="shopping-cart-product-quantity">0</p>
+              <p data-testid="shopping-cart-product-quantity">1</p>
               <p>
                 {' '}
                 {price}

@@ -25,10 +25,10 @@ class ProductListing extends React.Component {
     this.setState({ search: value });
   };
 
-  buscarProdutos = async (category) => {
-    // const { search } = this.state;
+  buscarProdutos = async () => {
+    const { search } = this.state;
     this.setState({ itemPesquisado: [] });
-    const listaDeProdutos = await getProductsFromCategoryAndQuery(category);
+    const listaDeProdutos = await getProductsFromCategoryAndQuery('', search);
     const itensEscolhidos = listaDeProdutos.results;
     this.setState({ itemPesquisado: itensEscolhidos });
   };
@@ -38,9 +38,12 @@ class ProductListing extends React.Component {
     this.setState({ dataCategories });
   };
 
-  onChangeRadio = ({ target }) => {
+  onChangeRadio = async ({ target }) => {
     const { value } = target;
-    this.buscarProdutos(value);
+    const listaDeProdutos = await getProductsFromCategoryAndQuery(value);
+    console.log('onChangeRadio');
+    const itensEscolhidos = listaDeProdutos.results;
+    this.setState({ itemPesquisado: itensEscolhidos });
   };
 
   onClick = (cadaProduto) => {
@@ -53,23 +56,28 @@ class ProductListing extends React.Component {
     const pesquisa = itemPesquisado.length > 0
       ? itemPesquisado.map((cadaProduto) => (
         <>
-          <ItensResumidos
-            cadaProduto={ cadaProduto }
+          <Link
+            to={ `/product/${cadaProduto.id}` }
             key={ cadaProduto.id }
-            nome={ cadaProduto.title }
-            imagem={ cadaProduto.thumbnail }
-            alt={ cadaProduto.title }
-            preco={ cadaProduto.price }
-          />
+            data-testid="product-detail-link"
+          >
+            <ItensResumidos
+              cadaProduto={ cadaProduto }
+              key={ cadaProduto.id }
+              nome={ cadaProduto.title }
+              imagem={ cadaProduto.thumbnail }
+              alt={ cadaProduto.title }
+              preco={ cadaProduto.price }
+            />
+          </Link>
           <button
             type="button"
             data-testid="product-add-to-cart"
-            onClick={
-              () => this.onClick(cadaProduto)
-            }
+            onClick={ () => this.onClick(cadaProduto) }
           >
             Adicionar ao carrinho
           </button>
+
         </>
       ))
       : <p>Nenhum produto foi encontrado</p>;
@@ -92,7 +100,7 @@ class ProductListing extends React.Component {
           <button
             type="button"
             data-testid="query-button"
-            onClick={ () => this.buscarProdutos(search) }
+            onClick={ this.buscarProdutos }
           >
             Buscar
           </button>
