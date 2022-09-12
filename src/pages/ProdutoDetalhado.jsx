@@ -7,11 +7,22 @@ class ProdutoDetalhado extends React.Component {
   state = {
     detalhesDoProduto: {},
     atributos: {},
+    favorites: [],
   };
 
   componentDidMount() {
     this.pegarDetalhesDoProduto();
   }
+
+  componentDidUpdate() {
+    const { favorites } = this.state;
+    localStorage.setItem('produtos', JSON.stringify(favorites));
+  }
+
+  onClick = (detalhesDoProduto) => {
+    const { favorites } = this.state;
+    this.setState({ favorites: [...favorites, detalhesDoProduto] });
+  };
 
   pegarDetalhesDoProduto = async () => {
     const { match: { params: { id } } } = this.props;
@@ -41,6 +52,13 @@ class ProdutoDetalhado extends React.Component {
         <Link to="/Cart">
           <button type="button" data-testid="shopping-cart-button">Carrinho</button>
         </Link>
+        <button
+          type="button"
+          data-testid="product-detail-add-to-cart"
+          onClick={ () => this.onClick(detalhesDoProduto) }
+        >
+          Adicionar ao Carrinho
+        </button>
       </div>
     );
   }

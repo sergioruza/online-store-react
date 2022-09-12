@@ -55,7 +55,7 @@ class ProductListing extends React.Component {
     const { search, itemPesquisado, dataCategories } = this.state;
     const pesquisa = itemPesquisado.length > 0
       ? itemPesquisado.map((cadaProduto) => (
-        <>
+        <div key={ cadaProduto.id }>
           <Link
             to={ `/product/${cadaProduto.id}` }
             key={ cadaProduto.id }
@@ -78,7 +78,7 @@ class ProductListing extends React.Component {
             Adicionar ao carrinho
           </button>
 
-        </>
+        </div>
       ))
       : <p>Nenhum produto foi encontrado</p>;
     return (
