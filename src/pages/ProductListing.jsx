@@ -8,10 +8,16 @@ class ProductListing extends React.Component {
     search: '',
     itemPesquisado: [],
     dataCategories: [],
+    favorites: [],
   };
 
   componentDidMount() {
     this.getCategoriesAPI();
+  }
+
+  componentDidUpdate() {
+    const { favorites } = this.state;
+    localStorage.setItem('produtos', JSON.stringify(favorites));
   }
 
   handleChange = ({ target }) => {
@@ -37,23 +43,35 @@ class ProductListing extends React.Component {
     this.buscarProdutos(value);
   };
 
+  onClick = (cadaProduto) => {
+    const { favorites } = this.state;
+    this.setState({ favorites: [...favorites, cadaProduto] });
+  };
+
   render() {
     const { search, itemPesquisado, dataCategories } = this.state;
     const pesquisa = itemPesquisado.length > 0
       ? itemPesquisado.map((cadaProduto) => (
-        <Link
-          to={ `/product/${cadaProduto.id}` }
-          key={ cadaProduto.id }
-          data-testid="product-detail-link"
-        >
+        <>
           <ItensResumidos
+            cadaProduto={ cadaProduto }
             key={ cadaProduto.id }
             nome={ cadaProduto.title }
             imagem={ cadaProduto.thumbnail }
             alt={ cadaProduto.title }
             preco={ cadaProduto.price }
           />
-        </Link>))
+          <button
+            type="button"
+            data-testid="product-add-to-cart"
+            onClick={
+              () => this.onClick(cadaProduto)
+            }
+          >
+            Adicionar ao carrinho
+          </button>
+        </>
+      ))
       : <p>Nenhum produto foi encontrado</p>;
     return (
       <div>
