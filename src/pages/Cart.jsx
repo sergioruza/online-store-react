@@ -14,6 +14,10 @@ class Cart extends React.Component {
     if (data) this.setState({ data });
   };
 
+  aumentarProduto = ({ target }) => {
+    console.log(target);
+  };
+
   render() {
     const { data } = this.state;
     return (
@@ -21,11 +25,26 @@ class Cart extends React.Component {
         {
           data.length > 0 ? data.map(({ id, price, thumbnail, title }) => (
             <div key={ id }>
-              {console.log(title)}
               <img src={ thumbnail } alt={ title } />
-              {/* <p><span data-testid="shopping-cart-product-name">{ title }</span>, <span data-testid="shopping-cart-product-quantity"> {available_quantity} </span><></></p> */}
               <p data-testid="shopping-cart-product-name">{ title }</p>
               <p data-testid="shopping-cart-product-quantity">1</p>
+              <span>
+                <button
+                  type="button"
+                  data-testid="product-increase-quantity"
+                  onClick={ this.aumentarProduto }
+                >
+                  +
+                </button>
+                <button
+                  type="button"
+                  data-testid="product-decrease-quantity"
+                >
+                  -
+                </button>
+              </span>
+              <br />
+              <button type="button" data-testid="remove-product">Remover</button>
               <p>
                 {' '}
                 {price}
