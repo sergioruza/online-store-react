@@ -19,6 +19,7 @@ describe('8 - Adicione produtos a partir da tela de listagem de produtos', () =>
 
     expect(global.fetch).toHaveBeenCalledTimes(2);
     expect(screen.getAllByTestId('shopping-cart-product-name'));
+    console.log(localStorage.getItem('produtos'));
     expect(screen.getByTestId('shopping-cart-product-name')).toHaveTextContent(
       mockedQueryResult.results[0].title
     );

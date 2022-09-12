@@ -20,7 +20,7 @@ class Cart extends React.Component {
     return (
       <div>
         {
-          data > 0 ? data.map(({ id, price, thumbnail, title }) => (
+          data.length > 0 ? data.map(({ id, price, thumbnail, title }) => (
             <div key={ id }>
               {console.log(title)}
               <img src={ thumbnail } alt={ title } />
