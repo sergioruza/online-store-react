@@ -1,4 +1,5 @@
 import React from 'react';
+import ItensCarrinho from '../components/ItensCarrinho';
 
 class Cart extends React.Component {
   state = {
@@ -20,18 +21,13 @@ class Cart extends React.Component {
       <div>
         {
           data.length > 0 ? data.map(({ id, price, thumbnail, title }) => (
-            <div key={ id }>
-              {console.log(title)}
-              <img src={ thumbnail } alt={ title } />
-              {/* <p><span data-testid="shopping-cart-product-name">{ title }</span>, <span data-testid="shopping-cart-product-quantity"> {available_quantity} </span><></></p> */}
-              <p data-testid="shopping-cart-product-name">{ title }</p>
-              <p data-testid="shopping-cart-product-quantity">1</p>
-              <p>
-                {' '}
-                {price}
-                {' '}
-              </p>
-            </div>
+            <ItensCarrinho
+              key={ id }
+              id={ id }
+              thumbnail={ thumbnail }
+              title={ title }
+              price={ price }
+            />
           ))
             : <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
         }
