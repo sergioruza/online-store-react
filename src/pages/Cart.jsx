@@ -3,6 +3,7 @@ import React from 'react';
 class Cart extends React.Component {
   state = {
     data: [],
+    disabled: true,
   };
 
   componentDidMount() {
@@ -15,11 +16,22 @@ class Cart extends React.Component {
   };
 
   aumentarProduto = ({ target }) => {
-    console.log(target);
+    const soma = Number(target.parentNode.previousSibling.innerText) + 1;
+    target.parentNode.previousSibling.innerText = soma;
+    this.setState({ disabled: false });
+  };
+
+  diminuirProduto = ({ target }) => {
+    const sub = Number(target.parentNode.previousSibling.innerText) - 1;
+    const minNumber = 3;
+    if (Number(target.parentNode.previousSibling.innerText) < minNumber) {
+      this.setState({ disabled: true });
+    }
+    (target.parentNode.previousSibling.innerText = sub);
   };
 
   render() {
-    const { data } = this.state;
+    const { data, disabled } = this.state;
     return (
       <div>
         {
@@ -39,6 +51,8 @@ class Cart extends React.Component {
                 <button
                   type="button"
                   data-testid="product-decrease-quantity"
+                  disabled={ disabled }
+                  onClick={ this.diminuirProduto }
                 >
                   -
                 </button>
