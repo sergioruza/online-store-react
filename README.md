@@ -68,3 +68,11 @@ Respeitando a proposta, o sistema deverá atender os seguintes requisitos:
 
 - Praticar todas as habilidades desenvolvidas até agora com Front-end;
 </details>
+
+  <details>
+    <summary><strong>🏻‍💼 Membros da Equipe</strong></summary><br />
+  
+* [Bruno Almeida](https://github.com/BrunoPulquerio);
+* [Hiago Peroni](https://github.com/Hiagoperoni);
+* [Állex](https://github.com/allexwithx);
+  </details>
